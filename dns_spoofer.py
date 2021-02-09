@@ -76,7 +76,7 @@ def scan_for_open_ports(candidate_port_range_start, range_size):
 	destination_ports = [port for port in range(candidate_port_range_start, candidate_port_range_start + range_size)] * int(BATCH_SIZE / range_size)
 	# Add padding ports to the range of scanned ports to make sure the batch size required for the attack to work is achieved
 	padding_port_scans = BATCH_SIZE - len(destination_ports)
-	destination_ports += [0 for port in range(candidate_port_range_start, candidate_port_range_start + padding_port_scans)]
+	destination_ports += [1 for port in range(candidate_port_range_start, candidate_port_range_start + padding_port_scans)]
 
 	# Record the time before sending the first datagram in order to determine the sleep time
 	start_time = perf_counter()
