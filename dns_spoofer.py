@@ -39,8 +39,8 @@ PSEUDO_HEADER_PORT_SCAN_DATAGRAM = struct.pack(
 )
 
 # Probing packet used by the attacker to determine if there is an open port in the scanned range
-PROBING_PACKET = Ether() / IP(dst=DNS_SERVER_IP) / UDP(dport=0) / 'Probing for answer'
-PROBING_PACKET_RAW = raw(PROBING_PACKET)
+VERIFICATION_DATAGRAM = Ether() / IP(dst=DNS_SERVER_IP) / UDP(dport=0) / 'Probing for answer'
+VERIFICATION_DATAGRAM_RAW = raw(VERIFICATION_DATAGRAM)
 
 # Return value used to signal that there is no open port in the scanned range
 NO_OPEN_PORT = -1
@@ -86,7 +86,7 @@ def scan_for_open_ports(candidate_port_range_start, range_size):
 		L2_SOCKET.send(patch_udp_destination_port(raw_datagram, destination_port, PSEUDO_HEADER_PORT_SCAN_DATAGRAM))
 	# Send the probe UDP datagram from the attacker's IP address to the DNS forward resolver
 	# In addition, the number of answered and unanswered packets is determined
-	answered, unanswered = L2_SOCKET.sr(PROBING_PACKET, timeout=PROBE_WAITING_TIME, verbose=0)
+	answered, unanswered = L2_SOCKET.sr(VERIFICATION_DATAGRAM_RAW, timeout=PROBE_WAITING_TIME, verbose=0)
 	# Record the time after sending the spoofed UDP probe datagrams, the UDP probe datagram from the attacker, and waiting for the answers
 	stop_time = perf_counter()
 
